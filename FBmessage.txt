@@ -1,3 +1,7 @@
+IP: 192.168.1.2
+Port: 21337
+MAC:  54:55:58:44:46:32
+
 If you're running on windows you will probably need wireshark. Winblows decides to block packets unless wireshark is running. I have no idea why.
 I would recommend just writing your own front end instead of using MATLAB. I'll bet that python has some good image libraries. Let me look up the packet format and I'll show you how to write an image to the floor via UDP
 
