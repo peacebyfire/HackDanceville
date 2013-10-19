@@ -1,0 +1,3 @@
+UDP Packet:
+byte array:
+"DANCEFLOOR" R0,G0,B0, R1,G1,B1 ... R63,B63,G63
