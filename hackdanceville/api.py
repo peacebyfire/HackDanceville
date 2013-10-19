@@ -33,8 +33,8 @@ class DancefloorAPI(object):
                     if not 255 >= i >= 0:
                         raise InvalidData('Invalid RGB value %s', str(i))
 
-    def convert_array(self, array):
-        data = list('DANCEFLOOR') + [1] + list(chain.from_iterable(array))
+    def convert_array(self, arr):
+        data = list('DANCEFLOOR') + [1] + list(chain.from_iterable(arr))
         return bytearray(data)
 
     def _send_raw(self, bytes):
