@@ -22,12 +22,15 @@ $(document).ready(function() {
     }
 
     function getPoints(tar) {
-        var returnValue = new Array;
-        $.each(tar.children(), function() {
+        var returnValue = new Array();
+        $.each(tar.children('.frame_button'), function() {
             var self = this;
             var thisColor = self.style.backgroundColor;
             var rgb = thisColor.replace(/^rgba?\(|\s+|\)$/g,'').split(',');
-            returnValue[returnValue.length] = rgb; 
+            if (rgb[0] === ''){
+                rgb = [255, 255, 255];
+            }
+            returnValue[returnValue.length] = $.map(rgb, function(el, i){ return parseInt(el);});
         });
         return returnValue;
     }
@@ -84,14 +87,16 @@ $(document).ready(function() {
     });
 
     $('#displayButton').mouseup(function() {
-        var finalObject = new Array();
+        var finalObject = new Array(),
+            postData;
         $.each($('#frames').children(), function(e) {
             var data = getPoints($(this));
             finalObject[finalObject.length] = data;
         });
-        $.post( '///// enter url////', finalObject.reverse(), function() {
+        postData = [{"name": "data", "value": JSON.stringify(finalObject)}];
+        $.post( '/builder/display', postData, function() {
             console.log('done');
-        }).fail(function() {
+        }, 'json').fail(function() {
             console.log('failed');
         });
     });

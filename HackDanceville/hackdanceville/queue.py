@@ -5,18 +5,16 @@ import time
 from hackdanceville.api import dancefloor
 
 
-dance_queue = Queue()
-
-
 class DancefloorLoop(threading.Thread):
     def __init__(self, data=None, delay=0.1):
         self.delay = delay
         self.data = data
+        self.queue = Queue()
         super(DancefloorLoop, self).__init__()
 
     def update_data(self):
         try:
-            self.data = dance_queue.get_nowait()
+            self.data = self.queue.get_nowait()
         except Empty:
             pass
 
@@ -31,9 +29,8 @@ class DancefloorLoop(threading.Thread):
 if __name__ == "__main__":
     data = [[0, 0, 0] for i in xrange(64)]
     data[35][1] = 255
-    loop = DancefloorLoop()
-    loop.data = data
+    loop = DancefloorLoop(data=data)
     loop.start()
-    time.sleep(5)
-    dance_queue.put(None)
+    time.sleep(15)
+    loop.queue.put(None)
     loop.join(5)

@@ -1,0 +1,19 @@
+{% extends "master.jinja" %}
+
+{% block master_title %}
+Welcome to the Dancefloor
+{% endblock %}
+
+
+{% block contents %}
+    <section class="text-center menu">
+        <h2>Applications</h2>
+        {% for plugin in plugins %}
+            <div class="plugin-container">
+                <a class="btn btn-default" href="{{ plugin.url }}">{{ plugin.label }}</a>
+            </div>
+        {% endfor %}
+    </section>
+    <hr>
+
+{% endblock %}

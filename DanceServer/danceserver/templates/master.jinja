@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="charset={{ response.charset }}"/>
+    {% block master_head %}
+    {% endblock %}
+    <title>{% block master_title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{tg.url('/css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{tg.url('/css/bootstrap-responsive.min.css')}}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{{tg.url('/css/style.css')}}" />
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#"><img src="{{tg.url('/img/logo.png')}}" alt="Hack Danceville"/>Hack Danceville</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash messages -->
+
+        {% with flash=tg.flash_obj.render('flash', use_js=False) %}
+            <div class="row"><div class="span8 offset2">
+                {{ flash|safe }}
+            </div></div>
+        {% endwith %}
+
+        {% block contents %}
+        {% endblock %}
+
+        <!-- End of main_content -->
+        <footer class="footer hidden-tablet hidden-phone">
+        </footer>
+    </div>
+
+    <script src="/javascript/jquery.min.js"></script>
+    {% block extra_js %}
+
+    {% endblock %}
+
+</body>
+</html>
