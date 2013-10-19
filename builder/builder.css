@@ -1,0 +1,84 @@
+#wrapper {
+    position: relative;
+    width:800px;
+    margin: 0px auto;
+}
+
+#builder {
+    float:left;
+    border: 1px solid;
+    width: 296px;
+    height: 296px;
+}
+
+.displayFrame {
+    border-bottom: 1px solid;
+    margin-bottom:1px;
+    width: 96px;
+    height: 96px;
+    position: relative;
+}
+
+#color_picker {
+    float:left;
+    margin-left: 20px;
+}
+
+#color {
+    height: 200px;
+    width: 200px;
+    border: 1px solid;
+}
+
+#colortext {
+    width: 197px;
+}
+
+#frames_holder {
+    float: left;
+    margin-left: 20px;
+    top: 100px;
+    right: 20px;
+    border: 1px solid;
+    min-height: 20px;
+    width: 96px;
+}
+
+.color_button {
+    height: 12.15%;
+    width: 12.15%;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    float: left;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.frame_button {
+    height: 11.15%;
+    width: 11.15%;
+    border-right: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    float: left;
+    cursor: pointer;
+}
+
+.color_button-active {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+#display_wrapper {
+    float: left;
+    margin-left: 20px;
+}
+
+.deleteFrame {
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+}
