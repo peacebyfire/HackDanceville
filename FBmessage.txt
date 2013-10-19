@@ -1,0 +1,20 @@
+If you're running on windows you will probably need wireshark. Winblows decides to block packets unless wireshark is running. I have no idea why.
+I would recommend just writing your own front end instead of using MATLAB. I'll bet that python has some good image libraries. Let me look up the packet format and I'll show you how to write an image to the floor via UDP
+
+The packet format is pretty simple. 
+There are two types of packets, one that contains a frame and one that simply says "display now"
+[Frame Packet]
+If you make an array of the following format and send it via UDP then it will be loaded into the floor.
+I think I mentioned on your wall that it was 16-bit numbers, turns out it's not. I must have fixed that and forgot.
+uint8 data[] = {'D','A','N','C','E','F','L','O','O','R', 0x01, R0, G0, B0, R1, G1, B1, ... R63, G63, B63};
+Where Rn Gn and Bn are the red, green, and blue components of the corresponding pixel.
+[Display Now Packet]
+The data from the last data packet is displayed as soon as this packet is received
+uint8 disp[] = {'D','A','N','C','E','F','L','O','O','R', 0x02}
+-----------------------------------------------------------------------
+I believe I defined the top left as pixel zero and the numbers go left to right, top to bottom.
+It might be easiest to find a python image library and create an 8x8 image. Then you can use the library for cool image manipulations, loading gifs, etc.
+Then use the libraries functions to query the R G and B values for each pixel and create the data array.
+For most 24-bit image formats, each color channel is one byte (or close). I would recommend that for maximum color resolution.
+If you have to down convert a color channel value that is larger than 8 bits, shift it right such that the most significant 8 bits don't get chopped off by the conversion.
+
