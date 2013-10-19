@@ -48,12 +48,14 @@ class DancefloorAPI(object):
         self._send_raw(self.ENDDATA)
 
 
+dancefloor = DancefloorAPI('192.168.1.2', 21337)
+
+
 if __name__ == "__main__":
-    api = DancefloorAPI('192.168.1.2', 21337, True)
     count = 0
     while True:
         data = [[0, 0, 0] for i in xrange(64)]
         count += 1
         data[count % 64][count % 3] = 255
-        api.send(data)
+        dancefloor.send(data)
         time.sleep(0.1)
