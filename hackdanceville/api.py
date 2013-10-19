@@ -34,7 +34,12 @@ class DancefloorAPI(object):
                         raise InvalidData('Invalid RGB value %s', str(i))
 
     def convert_array(self, arr):
-        data = list('DANCEFLOOR') + [1] + list(chain.from_iterable(arr))
+        try:
+            iter(arr[0])
+            arr = list(chain.from_iterable(arr))
+        except TypeError:
+            pass
+        data = list('DANCEFLOOR') + [1] + arr
         return bytearray(data)
 
     def _send_raw(self, bytes):
