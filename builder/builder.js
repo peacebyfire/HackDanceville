@@ -29,7 +29,7 @@ $(document).ready(function() {
             var rgb = thisColor.replace(/^rgba?\(|\s+|\)$/g,'').split(',');
             returnValue[returnValue.length] = rgb; 
         });
-        return returnValue;
+        return returnValue.reverse();
     }
 
     function hexToRgb(hex) {
@@ -89,7 +89,7 @@ $(document).ready(function() {
             var data = getPoints($(this));
             finalObject[finalObject.length] = data;
         });
-        $.post( '///// enter url////', data, function() {
+        $.post( '///// enter url////', finalObject, function() {
             console.log('done');
         });
     });
