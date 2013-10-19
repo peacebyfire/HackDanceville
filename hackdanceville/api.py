@@ -3,6 +3,10 @@ import socket
 from itertools import chain
 
 
+class InvalidData(Exception):
+    pass
+
+
 class DancefloorAPI(object):
 
     def __init__(self, ip_address, port, validate=False):
@@ -18,11 +22,19 @@ class DancefloorAPI(object):
         self.connected = True
 
     def validate_array(self, array):
-        pass
+        if not len(array) in (64, 192):
+            raise InvalidData('array must be length 64 or 192')
+        if len(array) == 64:
+            for el in array:
+                if len(el) != 3:
+                    raise InvalidData('Element %s not length 3' % el)
+                for i in el:
+                    if not 255 >= i >= 0:
+                        raise InvalidData('Invalid RGB value %s', str(i))
 
     def convert_array(self, array):
-        raw = bytearray(chain('DANCEFLOOR', [1], array))
-        return raw
+        data = list('DANCEFLOOR') + [1] + list(chain.from_iterable(array))
+        return bytearray(data)
 
     def _send_raw(self, bytes):
         return self.sock.sendto(bytes, (self.ip_address, self.port))
@@ -36,11 +48,11 @@ class DancefloorAPI(object):
 
 
 if __name__ == "__main__":
-    api = DancefloorAPI('192.168.1.2', 21337)
+    api = DancefloorAPI('192.168.1.2', 21337, True)
     count = 0
     while True:
-        data = [0] * 192
+        data = [[0, 0, 0] for i in xrange(64)]
         count += 1
-        data[count % 192] = 255
+        data[count % 64][count % 3] = 255
         api.send(data)
         time.sleep(0.1)
