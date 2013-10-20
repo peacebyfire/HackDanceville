@@ -100,11 +100,19 @@ $(document).ready(function() {
             var data = getPoints($(this));
             finalObject[finalObject.length] = data;
         });
-        postData = [{"name": "data", "value": JSON.stringify(finalObject)}];
+        postData = [{"name": "data", "value": JSON.stringify(finalObject.reverse())}];
         $.post( '/builder/display', postData, function() {
+            $('#stopButton').show();
             console.log('done');
         }, 'json').fail(function() {
             console.log('failed');
+        });
+    });
+
+    $('#stopButton').mouseup(function() {
+        $.post('/builder/stop', function() {
+            $('#stopButton').hide();
+            console.log('stop display');
         });
     });
 
