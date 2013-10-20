@@ -53,7 +53,7 @@ class DancefloorAPI(object):
         self._send_raw(self.ENDDATA)
 
 
-dancefloor = DancefloorAPI('192.168.1.2', 21337)
+dancefloor = DancefloorAPI('192.168.1.3', 21337)
 
 
 if __name__ == "__main__":

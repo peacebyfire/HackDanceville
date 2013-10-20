@@ -51,14 +51,3 @@ myJSON = {
 }
 data = [{"name":proj,"value":myJSON[proj]["value"], "color":myJSON[proj]["color"]} for proj in myJSON]
 
-def json_data_to_floor_array_shuffled(data, height, width):
-    # get top 8 projects
-    top_eight = sorted(data, key=lambda k: k["value"])
-    
-    # normalize
-    total = sum([proj["value"] for proj in top_eight])
-    
-    val = lambda x: int(round(width*height*x["value"]/float(total)))
-    votingdata = [proj["color"]*val(proj) for proj in top_eight]
-    shuffle(votingdata)
-    return(votingdata)
