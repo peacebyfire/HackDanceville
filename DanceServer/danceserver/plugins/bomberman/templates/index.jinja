@@ -7,31 +7,14 @@
     <link rel="stylesheet" type="text/css" href="/builder/builder.css">
 {% endblock %}
 
-{% block extra_js %}
-    <script type="text/javascript" src="/bomberman/bomber.js"></script>
-{% endblock %}
-
 {% block contents %}
-    <section id="bomberman-controls">
-        <div id="builder"></div>
-        <div style="flaot:left" style="border:1px solid;">
-            <div class="container-fluid">
-                <div class="row-fluid">
-                    <div class="span6 keypic text-right">
-                        <img src="/bomberman/arrowkeys.gif" style="height:80px;" alt="arrow keys"/>
-                        Movement
-                    </div>
-                    <div class="span6 keypic text-right">
-                        <img src="/bomberman/spacebar.png" style="height:80px;" alt="spacebar"/>
-                        Drop bomb
-                    </div>
-                    <div class="span6 keypic text-right">
-                        <img src="/bomberman/q.jpg" style="height:80px;" alt="q"/>
-                        Exit
-                    </div>
-                </div>
-            </div>
-            <div style="clear:both;"></div>
+    <section class="text-center menu">
+        <h2>Welcome to Bomberman</h2>
+        <div class="container">
+            <a class="btn btn-default" href="/bomberman/local">Local Game</a>
+        </div>
+        <div class="container">
+            <a class="btn btn-default" style="cursor: default; pointer-events: none;" href="/bomberman/network" disabled>Network Game</a>
         </div>
     </section>
 {% endblock %}
