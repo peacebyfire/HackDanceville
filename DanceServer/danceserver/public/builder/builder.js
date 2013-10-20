@@ -18,7 +18,7 @@ $(document).ready(function() {
     function resetButtons() {
         for(var i = 0; i < 64; i++) {
             console.log(i);
-            $('#button' + i).css('background', '');
+            $('#button' + i).css('background', '#000000');
         }
     }
 
