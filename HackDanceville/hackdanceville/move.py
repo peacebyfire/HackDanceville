@@ -152,7 +152,7 @@ class Bomb(object):
         self.bombSet = False
         self.exploded = False
 
-    def setBomb(self, playerPosX, playerPosY):
+    def set_bomb(self, playerPosX, playerPosY):
         if self.bombSet == False:
             print 'bomb set'
             self.x = playerPosX
@@ -160,7 +160,7 @@ class Bomb(object):
             self.bombSet = True
             self.exploded = False
 
-    def returnData(self):
+    def return_data(self):
         if self.bombSet == True
             self.blinkCount + 1
             if self.blinkCount > 5
@@ -172,6 +172,43 @@ class Bomb(object):
             self.exploded = False
         return self
 
+class Player(object):
+
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.color = color
+        self.bombs = []
+
+    def move_left(self):
+        self.x = (self.x - 1) % 8
+
+    def move_right(self):
+        self.x = (self.x + 1) % 8
+
+    def move_up(self):
+        self.y = (self.y - 1) % 8
+
+    def move_down(self):
+        self.y = (self.y + 1) % 8
+
+    def setBomb(self):
+        if self.bombs.count < 4:
+            self.bombs.append(Bomb(self))
+
+    def removeBomb(self):
+        del self.bombs[0]
+
+    def returnData(self):
+        returnObj = {}
+        returnObj['x'] = self.x
+        returnObj['y'] = self.y
+        returnObj['color'] = self.color
+        returnObj['bombCount'] = self.bomb.count
+        returnObj['bombs'] = []
+        for el in self.bombs
+            thisBomb = el.returnData()
+            returnObj['bombs'].append(thisBomb)
 
 if __name__ == "__main__":
     m = Move()
