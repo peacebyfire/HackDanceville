@@ -1,20 +1,37 @@
 from hackdanceville.queue import DancefloorLoop
 
+VICTORY_SCREENS = {
+    "player1": [[0,0,0],[0,0,0],[0,255,0],[0,255,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,255,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,255,0],[0,255,0],[0,255,0],[0,255,0],[0,255,0],[0,0,0]],
+    "player2": [[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,0]]
+}
+
 
 class BaseBomberman(DancefloorLoop):
 
     def __init__(self, api=None, delay=0.1):
-        data = True
-        super(BaseBomberman, self).__init__(api, data, delay)
+        super(BaseBomberman, self).__init__(api, True, delay)
         self.players = {}
-        self.bombs = []
+        self.reset()
+
+    def reset(self):
+        self.data = True
+        self.gameover = False
+        self.victory_count = 0
+
+    def kill_player(self, player_name):
+        del self.players[player_name]
+        if len(self.players) == 1:
+            self.data = VICTORY_SCREENS[self.players.keys()[0]]
+            self.gameover = True
 
     def check_explosion(self, bomb):
-        pass
+        for pname, player in self.players.items():
+            if abs(player.x - bomb.x) <= 2 and abs(player.y - bomb.y) <= 2:
+                self.kill_player(pname)
 
     def compile_data(self):
         data = [[0, 0, 0] for i in xrange(64)]
-        for pname, player in self.players.items():
+        for player in self.players.values():
             player_data = player.returnData()
             cell = player_data["y"] * 8 + player_data["x"]
             data[cell] = player_data["color"]
@@ -26,13 +43,20 @@ class BaseBomberman(DancefloorLoop):
         return data
 
     def on_before_send(self):
-        return self.compile_data()
+        if not self.gameover:
+            data = self.compile_data()
+        else:
+            self.victory_count += 1
+            data = self.data
+            if self.victory_count > 40:
+                self.reset()
+        return data
 
 
 class SingleKeyboardBomberman(BaseBomberman):
 
-    def __init__(self, api=None, delay=0.1):
-        super(SingleKeyboardBomberman, self).__init__(api, delay)
+    def reset(self):
+        super(SingleKeyboardBomberman, self).reset()
         self.players['player1'] = Player([0, 255, 0], [7,0])
         self.players['player2'] = Player([0, 0, 255], [0,7])
         self.keymap = {
