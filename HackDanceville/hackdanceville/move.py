@@ -26,9 +26,9 @@ class BaseBomberman(DancefloorLoop):
         pass
 
     def compile_data(self):
-        data = [[0, 0, 0] for i in xrange(self.api.size)]
+        data = [[0, 0, 0] for i in xrange(64)]
         for pname, player in self.players.items():
-            player_data = player.return_data()
+            player_data = player.returnData()
             cell = player_data["y"] * 8 + player_data["x"]
             data[cell] = player_data["color"]
             for bomb in player_data["bombs"]:
@@ -44,17 +44,17 @@ class BaseBomberman(DancefloorLoop):
 
 class SingleKeyboardBomberman(BaseBomberman):
 
-    def __init__(self, loop=None, api=None):
-        super(SingleKeyboardBomberman, self).__init__(loop, api)
+    def __init__(self, api=None, delay=0.1):
+        super(SingleKeyboardBomberman, self).__init__(api, delay)
         self.players['player1'] = Player([0, 255, 0])
         self.players['player2'] = Player([0, 0, 255])
         self.keymap = {
-            16: self.players['player1'].drop_bomb,
+            16: self.players['player1'].setBomb,
             38: self.players['player1'].move_up,
             40: self.players['player1'].move_down,
             37: self.players['player1'].move_left,
             39: self.players['player1'].move_right,
-            71: self.players['player2'].drop_bomb,
+            71: self.players['player2'].setBomb,
             83: self.players['player2'].move_up,
             70: self.players['player2'].move_down,
             65: self.players['player2'].move_left,
@@ -132,9 +132,9 @@ class Player(object):
         returnObj['x'] = self.x
         returnObj['y'] = self.y
         returnObj['color'] = self.color
-        returnObj['bombCount'] = self.bomb.count
+        returnObj['bombCount'] = len(self.bombs)
         returnObj['bombs'] = []
         for el in self.bombs:
             thisBomb = el.returnData()
             returnObj['bombs'].append(thisBomb)
-
+        return returnObj

@@ -7,16 +7,21 @@ class BombermanController(BasePluginController):
 
     def __init__(self, api):
         super(BombermanController, self).__init__(api)
-        self.bomber = SingleKeyboardBomberman(
-            loop=g.static_loop, api=api)
+        self.bomber = None
 
     @expose('danceserver.plugins.bomberman.templates.index')
     def index(self):
+        if self.bomber:
+            self.bomber.kill()
+        self.bomber = SingleKeyboardBomberman(api=self.api)
+        self.bomber.start()
         return {}
 
     @expose()
     def keypress(self, key):
-        key = int(key)
-        self.bomber.put(key)
-        if self.bomber.dead:
-            return 'gameover'
+        if self.bomber:
+            key = int(key)
+            self.bomber.put(key)
+            if self.bomber.dead:
+                self.bomber = None
+                return 'gameover'
