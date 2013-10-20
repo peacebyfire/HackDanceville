@@ -31,7 +31,7 @@ class Move(object):
         83 = s = player 2 up
         71 = g = player 2 bomb
         """
-        self.keymap = {
+        """self.keymap = {
             16: self.player1_drop_bomb,
             38: self.player1_move_up,
             40: self.player1_move_down,
@@ -43,27 +43,16 @@ class Move(object):
             65: self.player2_move_left,
             68: self.player2_move_right,
             113: self.quit
-        }
+        }"""
         self.color_i = 1
         self.loop = None
         self.go = False
 
     def init_data(self):
-        self.player1Data = [[0, 255, 0]]
-        for i in xrange(63):
-            self.player1Data.append([0, 0, 0])
-        self.player2Data = []
-        for i in xrange(63):
-            self.player2Data.append([0, 0, 0])
-        self.player2Data.append([0, 0, 255])
-        self.player1X = 0
-        self.player1Y = 0
-        self.player2X = 0
-        self.player2Y = 0
-        self.player1Bomb = Bomb();
-        self.player2Bomb = Bomb();
+        #player1 = Player([0, )
+        pass
 
-    def player1_drop_bomb(self):
+    """def player1_drop_bomb(self):
         self.player1Bomb.setBomb(self.player1X, self.player1Y)
 
     @movement_wrapper
@@ -99,7 +88,7 @@ class Move(object):
 
     @movement_wrapper
     def player2_move_down(self):
-        self.player2Y = (self.player2Y + 1) % 8
+        self.player2Y = (self.player2Y + 1) % 8"""
 
     def initialize_loop(self):
         if not self.loop or not self.loop.is_alive():
@@ -161,9 +150,9 @@ class Bomb(object):
             self.exploded = False
 
     def return_data(self):
-        if self.bombSet == True
+        if self.bombSet == True:
             self.blinkCount + 1
-            if self.blinkCount > 5
+            if self.blinkCount > 5:
                 self.exploded = True
                 self.bombSet = False
                 self.blinkCount = 0
@@ -174,7 +163,7 @@ class Bomb(object):
 
 class Player(object):
 
-    def __init__(self):
+    def __init__(self, color):
         self.x = 0
         self.y = 0
         self.color = color
@@ -206,7 +195,7 @@ class Player(object):
         returnObj['color'] = self.color
         returnObj['bombCount'] = self.bomb.count
         returnObj['bombs'] = []
-        for el in self.bombs
+        for el in self.bombs:
             thisBomb = el.returnData()
             returnObj['bombs'].append(thisBomb)
 
