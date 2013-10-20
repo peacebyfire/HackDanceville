@@ -1,17 +1,4 @@
-import curses
-
 from hackdanceville.queue import DancefloorLoop
-
-
-def movement_wrapper(func):
-    def wrapper(inst, *args, **kwargs):
-        print inst.player1Data
-        """inst.data[inst.y * 8 + inst.x][inst.color_i] = 0
-        func(inst, *args, **kwargs)
-        inst.data[inst.y * 8 + inst.x][inst.color_i] = 255"""
-        # check to see if player is on top of bomb
-        pass
-    return wrapper
 
 
 class BaseBomberman(DancefloorLoop):
@@ -76,21 +63,13 @@ class Bomb(object):
         self.y = player.y
         self.color = [255, 0, 0]
         self.blinkCount = 0
-        self.bombSet = False
+        self.bombSet = True
         self.exploded = False
-
-    def set_bomb(self, playerPosX, playerPosY):
-        if self.bombSet == False:
-            print 'bomb set'
-            self.x = playerPosX
-            self.y = playerPosY
-            self.bombSet = True
-            self.exploded = False
 
     def return_data(self):
         if self.bombSet == True:
             self.blinkCount += 1
-            if self.blinkCount > 5:
+            if self.blinkCount > 20:
                 self.exploded = True
                 self.bombSet = False
                 self.blinkCount = 0
@@ -121,7 +100,7 @@ class Player(object):
         self.y = (self.y + 1) % 8
 
     def setBomb(self):
-        if self.bombs.count < 4:
+        if len(self.bombs) < 4:
             self.bombs.append(Bomb(self))
 
     def removeBomb(self):
@@ -135,6 +114,6 @@ class Player(object):
         returnObj['bombCount'] = len(self.bombs)
         returnObj['bombs'] = []
         for el in self.bombs:
-            thisBomb = el.returnData()
+            thisBomb = el.return_data()
             returnObj['bombs'].append(thisBomb)
         return returnObj
