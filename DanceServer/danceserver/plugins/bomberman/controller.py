@@ -7,14 +7,6 @@ class BombermanController(BasePluginController):
 
     def __init__(self, api):
         super(BombermanController, self).__init__(api)
-        self.key_conversions = {
-            37: 260,
-            38: 259,
-            39: 261,
-            40: 258,
-            67: 99,
-            81: 113
-        }
         self.bomber = Move()
 
     @expose('danceserver.plugins.bomberman.templates.index')
@@ -27,7 +19,6 @@ class BombermanController(BasePluginController):
     @expose()
     def keypress(self, key):
         key = int(key)
-        key = self.key_conversions.get(key, key)
         self.bomber.put(key)
         if not self.bomber.go:
             return 'gameover'
