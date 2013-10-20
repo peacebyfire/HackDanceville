@@ -140,38 +140,37 @@ class Move(object):
 
 class Bomb(object):
 
-    x = 0
-    y = 0
-    exploded = False
-
-    def __init__(self):
+    def __init__(self, player):
         self.init_bomb()
+        self.player
 
-    def init_bomb(self):
-        self.bombData = []
-        for i in xrange(64):
-            self.bombData.append([0, 0, 0])
-        self.blasted = []
-
-    def collision(self, playerPosX, playerPosY):
-        if self.explosded == True and self.x == playerPosX and self.y == playerPosY:
-            return True;
-        else:
-            return False;
+    def init_bomb(self, color):
+        self.x = 0
+        self.y = 0
+        self.color = color
+        self.blinkCount = 0
+        self.bombSet = False
+        self.exploded = False
 
     def setBomb(self, playerPosX, playerPosY):
-        self.x = playerPosX
-        self.y = playerPosY
-        # set data and render
-        # start loop
+        if self.bombSet == False:
+            print 'bomb set'
+            self.x = playerPosX
+            self.y = playerPosY
+            self.bombSet = True
+            self.exploded = False
 
-    def bombTimer(self):
-        # start the timer
-        # blink
-        pass
-
-    def explodeBomb(self):
-        pass 
+    def returnData(self):
+        if self.bombSet == True
+            self.blinkCount + 1
+            if self.blinkCount > 5
+                self.exploded = True
+                self.bombSet = False
+                self.blinkCount = 0
+                player.removeBomb()
+        else:
+            self.exploded = False
+        return self
 
 
 if __name__ == "__main__":
