@@ -1,3 +1,5 @@
+from itertools import product
+
 from hackdanceville.queue import DancefloorLoop
 
 VICTORY_SCREENS = {
@@ -39,6 +41,11 @@ class BaseBomberman(DancefloorLoop):
                 cell = bomb.y * 8 + bomb.x
                 data[cell] = bomb.color
                 if bomb.exploded:
+                    coords = product(
+                        range(max(bomb.x - 1, 0), min(bomb.x + 2, 8)),
+                        range(max(bomb.y - 1, 0), min(bomb.y + 2, 8)))
+                    for x, y in coords:
+                        data[y * 8 + x] = bomb.color
                     self.check_explosion(bomb)
         return data
 
@@ -93,11 +100,13 @@ class Bomb(object):
     def return_data(self):
         if self.bombSet == True:
             self.blinkCount += 1
-            if self.blinkCount > 20:
+            if self.blinkCount > 50:
                 self.exploded = True
                 self.bombSet = False
                 self.blinkCount = 0
                 self.player.removeBomb()
+            elif self.blinkCount > 42:
+                self.color[0] = 0 if self.blinkCount % 2 else 255
         else:
             self.exploded = False
         return self
