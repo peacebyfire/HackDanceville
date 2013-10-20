@@ -87,17 +87,27 @@ class Player(object):
         self.color = color
         self.bombs = []
 
+    def find_pos(self, curPos, method):
+        if method == '-':
+            newPos = curPos - 1
+        else:
+            newPos = curPos + 1
+        if newPos < 8 and newPos > -1:
+            return newPos
+        else:
+            return curPos
+
     def move_left(self):
-        self.x = (self.x - 1) % 8
+        self.x = self.find_pos(self.x, '-')
 
     def move_right(self):
-        self.x = (self.x + 1) % 8
+        self.x = self.find_pos(self.x, '+')
 
     def move_up(self):
-        self.y = (self.y - 1) % 8
+        self.y = self.find_pos(self.y, '_')
 
     def move_down(self):
-        self.y = (self.y + 1) % 8
+        self.y = self.find_pos(self.y, '+')
 
     def setBomb(self):
         if len(self.bombs) < 4:
