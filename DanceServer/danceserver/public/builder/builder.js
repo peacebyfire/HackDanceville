@@ -4,12 +4,13 @@ $(document).ready(function() {
     var activeColor = '#000000';
     var mouseDown = false;
     var allowColor = false;
+    var colorPicker = '';
     
     function buildBuilderInterface() {
         for(var i = 0; i < 64; i++) {
             var button = '<div class="color_button" id="button' + i + '"></div>';
             $('#builder').append(button);
-            $('#button'+i).css('background', '#ffffff');
+            $('#button'+i).css('background', '#000000');
         }
         activateButtons();
     }
