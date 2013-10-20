@@ -6,7 +6,6 @@ $(function(){
             if (hotkeys.indexOf(event.which) !== -1){
                 $.post('/bomberman/keypress', {"key": event.which}, function(resp){
                     if (resp.status === "gameover"){
-                        alert("Game OVER");
                         document.location = '/';
                     } else if (resp["data"]) {
                         // render interface

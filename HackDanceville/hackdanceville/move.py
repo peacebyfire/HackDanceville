@@ -6,6 +6,7 @@ VICTORY_SCREENS = {
     "player1": [[0,0,0],[0,0,0],[0,255,0],[0,255,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,255,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,255,0],[0,255,0],[0,255,0],[0,255,0],[0,255,0],[0,255,0],[0,0,0]],
     "player2": [[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,255],[0,0,0]]
 }
+ER = 2
 
 
 class BaseBomberman(DancefloorLoop):
@@ -19,6 +20,7 @@ class BaseBomberman(DancefloorLoop):
         self.data = True
         self.gameover = False
         self.victory_count = 0
+        self.cur_map = None
 
     def kill_player(self, player_name):
         del self.players[player_name]
@@ -28,7 +30,8 @@ class BaseBomberman(DancefloorLoop):
 
     def check_explosion(self, bomb):
         for pname, player in self.players.items():
-            if abs(player.x - bomb.x) <= 1 and abs(player.y - bomb.y) <= 1:
+            if abs(player.x - bomb.x) <= ER and \
+                    abs(player.y - bomb.y) <= ER:
                 self.kill_player(pname)
 
     def compile_data(self):
@@ -42,11 +45,12 @@ class BaseBomberman(DancefloorLoop):
                 data[cell] = bomb.color
                 if bomb.exploded:
                     coords = product(
-                        range(max(bomb.x - 1, 0), min(bomb.x + 2, 8)),
-                        range(max(bomb.y - 1, 0), min(bomb.y + 2, 8)))
+                        range(max(bomb.x - ER, 0), min(bomb.x + ER, 8)),
+                        range(max(bomb.y - ER, 0), min(bomb.y + ER, 8)))
                     for x, y in coords:
                         data[y * 8 + x] = bomb.color
                     self.check_explosion(bomb)
+        self.cur_map = data
         return data
 
     def on_before_send(self):
@@ -77,7 +81,7 @@ class SingleKeyboardBomberman(BaseBomberman):
             70: self.players['player2'].move_down,
             65: self.players['player2'].move_left,
             68: self.players['player2'].move_right,
-            113: self.kill
+            81: self.kill
         }
 
     def put(self, key):

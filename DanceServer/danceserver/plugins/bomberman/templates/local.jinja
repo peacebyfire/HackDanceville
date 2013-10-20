@@ -1,0 +1,60 @@
+{% extends "master.jinja" %}
+
+{% block title %}Welcome to bomberman{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="/bomberman/bomber.css">
+    <link rel="stylesheet" type="text/css" href="/builder/builder.css">
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="/bomberman/bomber.js"></script>
+{% endblock %}
+
+{% block contents %}
+    <section id="bomberman-controls">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div id="builder" class="span4"></div>
+                <div class="pull-left span8" style="border:1px solid;height: 296px;">
+                    <div class="container-fluid">
+                        <div class="row-fluid">
+                            <div class="span6">
+                                <h4>Player 1 Controls</h4>
+                                <div class="keypic text-left row-fluid">
+                                    <div class="span6">
+                                        <img src="/bomberman/arrowkeys.gif" style="height:80px;" alt="arrow keys"/>
+                                    </div>
+                                    <div class="span6 controls-text">Movement</div>
+                                </div>
+                                <div class="keypic text-left row-fluid">
+                                    <div class="span6"><img src="/bomberman/shift.jpg" style="height:80px;" alt="shift"/></div>
+                                    <div class="span6 controls-text">Drop bomb</div>
+                                </div>
+                                <div class="keypic text-left row-fluid">
+                                    <div class="span6"><img src="/bomberman/q.jpg" style="height:80px;" alt="q"/></div>
+                                    <div class="span6 controls-text">Exit</div>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <h4>Player 2 Controls</h4>
+                                <div class="keypic text-left row-fluid">
+                                    <div class="span6"><img src="/bomberman/asdf.jpg" style="height:80px;" alt="arrow keys"/></div>
+                                    <div class="span6 controls-text">Movement</div>
+                                </div>
+                                <div class="keypic text-left row-fluid">
+                                    <div class="span6"><img src="/bomberman/g.png" style="height:80px;" alt="shift"/></div>
+                                    <div class="span6 controls-text">Drop bomb</div>
+                                </div>
+                                <div class="keypic text-left row-fluid">
+                                    <div class="span6"><img src="/bomberman/q.jpg" style="height:80px;" alt="q"/></div>
+                                    <div class="span6 controls-text">Exit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
