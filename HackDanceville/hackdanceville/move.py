@@ -25,7 +25,7 @@ class Move(object):
         39 = right arrow = player 1 right
         40 = down arrow = player 1 down
         81 = q = quit
-        64 = d = player 2 right
+        68 = d = player 2 right
         65 = a = player 2 left
         70 = f = player 2 down
         83 = s = player 2 up
@@ -41,7 +41,7 @@ class Move(object):
             83: self.player2_move_up,
             70: self.player2_move_down,
             65: self.player2_move_left,
-            64: self.player2_move_right,
+            68: self.player2_move_right,
             113: self.quit
         }
         self.color_i = 1
