@@ -1,0 +1,42 @@
+{% extends "master.jinja" %}
+
+{% block title %}Welcome to bomberman{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="/bomberman/bomber.css">
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="/bomberman/bomber.js"></script>
+{% endblock %}
+
+{% block contents %}
+    <section id="bomberman-controls">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span6 keypic text-right">
+                    <img src="/bomberman/arrowkeys.gif" alt="arrow keys"/>
+                </div>
+                <div class="span6 text-left controltext">
+                    Movement
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6 keypic text-right">
+                    <img src="/bomberman/spacebar.png" alt="spacebar"/>
+                </div>
+                <div class="span6 text-left controltext">
+                    Drop bomb
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6 keypic text-right">
+                    <img src="/bomberman/q.jpg" alt="q"/>
+                </div>
+                <div class="span6 text-left controltext">
+                    Exit
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
