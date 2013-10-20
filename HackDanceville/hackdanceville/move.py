@@ -2,6 +2,7 @@ import curses
 
 from hackdanceville.queue import DancefloorLoop
 
+
 def movement_wrapper(func):
     def wrapper(inst, *args, **kwargs):
         print inst.player1Data
@@ -13,130 +14,67 @@ def movement_wrapper(func):
     return wrapper
 
 
-class Move(object):
+class BaseBomberman(DancefloorLoop):
 
-    def __init__(self):
-        self.init_data()
-        """
-        Key mapping we care about, comes from jQuery
-        16 = shift = player 1 bomb
-        37 = left arrow = player 1 left
-        38 = up arrow = player 1 up
-        39 = right arrow = player 1 right
-        40 = down arrow = player 1 down
-        81 = q = quit
-        68 = d = player 2 right
-        65 = a = player 2 left
-        70 = f = player 2 down
-        83 = s = player 2 up
-        71 = g = player 2 bomb
-        """
-        """self.keymap = {
-            16: self.player1_drop_bomb,
-            38: self.player1_move_up,
-            40: self.player1_move_down,
-            37: self.player1_move_left,
-            39: self.player1_move_right,
-            71: self.player2_drop_bomb,
-            83: self.player2_move_up,
-            70: self.player2_move_down,
-            65: self.player2_move_left,
-            68: self.player2_move_right,
-            113: self.quit
-        }"""
-        self.color_i = 1
-        self.loop = None
-        self.go = False
+    def __init__(self, api=None, delay=0.1):
+        data = True
+        super(BaseBomberman, self).__init__(api, data, delay)
+        self.players = {}
+        self.bombs = []
 
-    def init_data(self):
-        #player1 = Player([0, )
+    def check_explosion(self, bomb):
         pass
 
-    """def player1_drop_bomb(self):
-        self.player1Bomb.setBomb(self.player1X, self.player1Y)
+    def compile_data(self):
+        data = [[0, 0, 0] for i in xrange(self.api.size)]
+        for pname, player in self.players.items():
+            player_data = player.return_data()
+            cell = player_data["y"] * 8 + player_data["x"]
+            data[cell] = player_data["color"]
+            for bomb in player_data["bombs"]:
+                cell = bomb.y * 8 + bomb.x
+                data[cell] = bomb.color
+                if bomb.exploded:
+                    self.check_explosion(bomb)
+        return data
 
-    @movement_wrapper
-    def player1_move_left(self):
-        self.player1X = (self.player1X - 1) % 8
+    def on_before_send(self):
+        return self.compile_data()
 
-    @movement_wrapper
-    def player1_move_right(self):
-        self.player1X = (self.player1X + 1) % 8
 
-    @movement_wrapper
-    def player1_move_up(self):
-        self.player1Y = (self.player1Y - 1) % 8
+class SingleKeyboardBomberman(BaseBomberman):
 
-    @movement_wrapper
-    def player1_move_down(self):
-        self.player1Y = (self.player1Y + 1) % 8
-
-    def player2_drop_bomb(self):
-        self.player2Bomb.setBomb(self.player2X, self.player2Y)
-
-    @movement_wrapper
-    def player2_move_left(self):
-        self.player2X = (self.player2X - 1) % 8
-
-    @movement_wrapper
-    def player2_move_right(self):
-        self.player2X = (self.player2X + 1) % 8
-
-    @movement_wrapper
-    def player2_move_up(self):
-        self.player2Y = (self.player2Y - 1) % 8
-
-    @movement_wrapper
-    def player2_move_down(self):
-        self.player2Y = (self.player2Y + 1) % 8"""
-
-    def initialize_loop(self):
-        if not self.loop or not self.loop.is_alive():
-            self.loop = DancefloorLoop(data=self.player1Data)
-            self.loop.start()
-            self.go = True
-
-    def quit(self):
-        self.player1Data = None
-        self.player2Data = None
-        self.go = False
+    def __init__(self, loop=None, api=None):
+        super(SingleKeyboardBomberman, self).__init__(loop, api)
+        self.players['player1'] = Player([0, 255, 0])
+        self.players['player2'] = Player([0, 0, 255])
+        self.keymap = {
+            16: self.players['player1'].drop_bomb,
+            38: self.players['player1'].move_up,
+            40: self.players['player1'].move_down,
+            37: self.players['player1'].move_left,
+            39: self.players['player1'].move_right,
+            71: self.players['player2'].drop_bomb,
+            83: self.players['player2'].move_up,
+            70: self.players['player2'].move_down,
+            65: self.players['player2'].move_left,
+            64: self.players['player2'].move_right,
+            113: self.kill
+        }
 
     def put(self, key):
-        print 'putting ' + str(key)
         if key in self.keymap:
             func = self.keymap[key]
             func()
-            print 'ran ' + str(func)
-        self.loop.queue.put(self.player1Data)
 
-    def curses_loop(self):
-        stdscr = curses.initscr()
-        curses.cbreak()
-        stdscr.keypad(1)
-
-        stdscr.addstr(0, 10, "Hit 'q' to quit")
-        stdscr.refresh()
-
-        self.initialize_loop()
-
-        while self.go:
-            key = stdscr.getch()
-            stdscr.addch(20, 25, key)
-            stdscr.refresh()
-            self.put(key)
-
-        curses.endwin()
 
 class Bomb(object):
 
     def __init__(self, player):
-        self.init_bomb()
-        self.player
-
-    def init_bomb(self, color):
-        self.x = 0
-        self.y = 0
-        self.color = color
+        self.player = player
+        self.x = player.x
+        self.y = player.y
+        self.color = [255, 0, 0]
         self.blinkCount = 0
         self.bombSet = False
         self.exploded = False
@@ -151,15 +89,16 @@ class Bomb(object):
 
     def return_data(self):
         if self.bombSet == True:
-            self.blinkCount + 1
+            self.blinkCount += 1
             if self.blinkCount > 5:
                 self.exploded = True
                 self.bombSet = False
                 self.blinkCount = 0
-                player.removeBomb()
+                self.player.removeBomb()
         else:
             self.exploded = False
         return self
+
 
 class Player(object):
 
@@ -199,6 +138,3 @@ class Player(object):
             thisBomb = el.returnData()
             returnObj['bombs'].append(thisBomb)
 
-if __name__ == "__main__":
-    m = Move()
-    m.curses_loop()

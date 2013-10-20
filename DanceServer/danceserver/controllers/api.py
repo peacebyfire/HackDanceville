@@ -3,7 +3,6 @@ import json
 from tg import expose, app_globals as g
 
 from danceserver.lib.base import BaseController
-from hackdanceville.queue import DancefloorLoop
 
 
 class APIController(BaseController):

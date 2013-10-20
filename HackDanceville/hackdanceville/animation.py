@@ -1,9 +1,10 @@
 import time
 import threading
 from Queue import Empty, Queue
+from hackdanceville.queue import DancefloorLoop
 
 
-class Animator(threading.Thread):
+class Animator(DancefloorLoop):
 
     def __init__(self, api, data=None, delay=0.1):
         self.api = api
@@ -15,31 +16,23 @@ class Animator(threading.Thread):
         self.delay = delay
         super(Animator, self).__init__()
 
-    def update_data(self):
-        try:
-            self.data = self.queue.get_nowait()
-        except Empty:
-            pass
-        else:
-            if self.data:
-                self.iter_data = iter(self.data)
+    def on_updated_data(self, data):
+        if data:
+            self.iter_data = iter(data)
+        super(Animator, self).on_updated_data(data)
 
-    def next(self):
+    def on_before_send(self):
         try:
             data = next(self.iter_data)
         except StopIteration:
             self.iter_data = iter(self.data)
-            return self.next()
+            data = next(self.iter_data)
         return data
 
     def run(self):
         self.update_data()
         while self.data:
-            data = self.next()
+            data = self.on_before_send()
             self.api.send(data)
             time.sleep(self.delay)
             self.update_data()
-
-    def kill(self):
-        self.queue.put(None)
-        self.join(5)
