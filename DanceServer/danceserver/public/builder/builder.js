@@ -47,6 +47,8 @@ $(document).ready(function() {
 
     function handleColor(color) {
         activeColor = color;
+        $('#colorValue').val(color);
+        allowColor = false;
     } 
 
     /**
@@ -65,7 +67,11 @@ $(document).ready(function() {
                 allowColor = true;
             }
         });
-        $.farbtastic('#color', handleColor);
+        colorPicker = $.farbtastic('#color', handleColor);
+
+        $('#colorValue').keyup(function() {
+            colorPicker.setColor($('#colorValue').val());
+        });
     }
 
     $('#saveFrame').mouseup(function() {
