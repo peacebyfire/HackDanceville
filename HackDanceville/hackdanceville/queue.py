@@ -25,6 +25,10 @@ class DancefloorLoop(threading.Thread):
             time.sleep(self.delay)
             self.update_data()
 
+    def kill(self):
+        self.queue.put(None)
+        self.join(5)
+
 
 if __name__ == "__main__":
     data = [[0, 0, 0] for i in xrange(64)]
@@ -32,5 +36,4 @@ if __name__ == "__main__":
     loop = DancefloorLoop(data=data)
     loop.start()
     time.sleep(15)
-    loop.queue.put(None)
-    loop.join(5)
+    loop.kill()
