@@ -17,11 +17,12 @@ class BombermanController(BasePluginController):
         self.bomber.start()
         return {}
 
-    @expose()
+    @expose('json')
     def keypress(self, key):
         if self.bomber:
             key = int(key)
             self.bomber.put(key)
             if self.bomber.dead:
                 self.bomber = None
-                return 'gameover'
+                return {"status": 'gameover'}
+            return {"data": self.bomber.cur_map}
