@@ -21,20 +21,24 @@ class LoopInterface(object):
             self.load_loop()
         return self._loop
 
-    def load_loop(self):
-        loop = self.cls(g.dancefloor, **self._loop_kwargs)
-        self._loop = loop
+    def load_loop(self, data=None):
+        if data:
+            self._loop_kwargs["data"] = data
+        self._loop = self.cls(g.dancefloor, **self._loop_kwargs)
 
     def put(self, data):
-        if not self.loop.is_alive():
-            self.start()
-        self.loop.queue.put(data)
+        if self.loop.is_alive():
+            self.loop.queue.put(data)
+        else:
+            self.start(data)
 
-    def start(self):
+    def start(self, data=None):
         try:
+            if data:
+                self.loop.queue.put(data)
             self.loop.start()
         except RuntimeError:
-            self.load_loop()
+            self.load_loop(data=data)
             self.loop.start()
 
     def kill(self):
