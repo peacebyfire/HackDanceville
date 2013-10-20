@@ -51,6 +51,15 @@ $(document).ready(function() {
         allowColor = false;
     } 
 
+    function getData() {
+        var finalObject = new Array();
+        $.each($('#frames').children(), function(e) {
+            var data = getPoints($(this));
+            finalObject[finalObject.length] = data;
+        });
+        return finalObject;
+    }
+
     /**
      * Bindings
      */
@@ -96,10 +105,7 @@ $(document).ready(function() {
     $('#displayButton').mouseup(function() {
         var finalObject = new Array(),
             postData;
-        $.each($('#frames').children(), function(e) {
-            var data = getPoints($(this));
-            finalObject[finalObject.length] = data;
-        });
+        finalObject = getData();
         postData = [{"name": "data", "value": JSON.stringify(finalObject.reverse())}];
         $.post( '/builder/display', postData, function() {
             $('#stopButton').show();
@@ -114,6 +120,31 @@ $(document).ready(function() {
             $('#stopButton').hide();
             console.log('stop display');
         });
+    });
+
+    $('#loadData').mouseup(function() {
+        var loadData = $('#loadSaveText').val();
+        var convertedData = $.parseJSON(loadData);
+        convertedData.reverse();
+        for(var i = 0; i < convertedData.length; i++) {
+            var count = $('#frames').children().length;
+            $('#frames').prepend('<div id="frame'+i+'" class="displayFrame"><div class="deleteFrame">x</div></div>');
+            $('.deleteFrame').mouseup(function() {
+                $(this).parent().remove();
+            });
+            for(var f=0; f < 64; f++) {
+                var tar = convertedData[i][f];
+                console.log(tar);
+                $('#frame'+i).append('<div id="frame_button'+f+'" class="frame_button"></div>');
+                var loadColor = 'rgb(' + tar[0] + ',' + tar[1] + ',' + tar[2] + ')';
+                console.log(loadColor);
+                $('#frame_button'+f).css('background', loadColor);
+            }
+        }
+    });
+
+    $('#saveData').mouseup(function() {
+        $('#loadSaveText').val(JSON.stringify(getData()));
     });
 
     buildBuilderInterface();
