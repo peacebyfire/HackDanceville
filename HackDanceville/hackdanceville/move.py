@@ -137,9 +137,10 @@ class Player(object):
         self.x = self.find_pos(self.x, '+')
 
     def move_up(self):
-        self.y = self.find_pos(self.y, '_')
+        self.y = self.find_pos(self.y, '-')
 
     def move_down(self):
+        print 'move down'
         self.y = self.find_pos(self.y, '+')
 
     def setBomb(self):
