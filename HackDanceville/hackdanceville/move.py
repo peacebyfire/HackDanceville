@@ -101,10 +101,6 @@ class Move(object):
     def player2_move_down(self):
         self.player2Y = (self.player2Y + 1) % 8
 
-    @movement_wrapper
-    def change_color(self):
-        self.color_i = 2 if self.color_i == 1 else 1
-
     def initialize_loop(self):
         if not self.loop or not self.loop.is_alive():
             self.loop = DancefloorLoop(data=self.player1Data)
