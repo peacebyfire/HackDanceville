@@ -11,9 +11,6 @@ class BombermanController(BasePluginController):
 
     @expose('danceserver.plugins.bomberman.templates.index')
     def index(self):
-        g.kill_loops_not_in('bomberman')
-        self.bomber.initialize_loop()
-        g.add_loop('bomberman', self.bomber.loop)
         return {}
 
     @expose()

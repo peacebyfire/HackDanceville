@@ -6,7 +6,10 @@ from hackdanceville.api import dancefloor
 
 
 class DancefloorLoop(threading.Thread):
-    def __init__(self, data=None, delay=0.1):
+    def __init__(self, api=None, data=None, delay=0.1):
+        if api is None:
+            api = dancefloor
+        self.api = api
         self.delay = delay
         self.data = data
         self.queue = Queue()
@@ -21,7 +24,7 @@ class DancefloorLoop(threading.Thread):
     def run(self):
         self.update_data()
         while self.data:
-            dancefloor.send(self.data)
+            self.api.send(self.data)
             time.sleep(self.delay)
             self.update_data()
 
