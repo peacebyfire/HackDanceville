@@ -64,7 +64,7 @@ class Move(object):
         self.player2Bomb = Bomb();
 
     def player1_drop_bomb(self):
-        pass
+        self.player1Bomb.setBomb(self.player1X, self.player1Y)
 
     @movement_wrapper
     def player1_move_left(self):
@@ -83,7 +83,7 @@ class Move(object):
         self.player1Y = (self.player1Y + 1) % 8
 
     def player2_drop_bomb(self):
-        pass
+        self.player2Bomb.setBomb(self.player2X, self.player2Y)
 
     @movement_wrapper
     def player2_move_left(self):
