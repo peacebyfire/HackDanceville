@@ -59,7 +59,8 @@ setup(
         ],
         'dancefloor.plugins': [
             'builder = danceserver.plugins.builder.controller:BuilderController',
-            'bomberman = danceserver.plugins.bomberman.controller:BombermanController'
+            'bomberman = danceserver.plugins.bomberman.controller:BombermanController',
+            'gifupload = danceserver.plugins.gifupload.controller:GifUploadController'
         ]
     },
     dependency_links=[

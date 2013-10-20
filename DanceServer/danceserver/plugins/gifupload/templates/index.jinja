@@ -7,35 +7,18 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script type="text/javascript" src="/bomberman/bomber.js"></script>
 {% endblock %}
 
 {% block contents %}
     <section id="bomberman-controls">
-        <div class="container-fluid">
+        <div class="container-fluid" method="post">
             <div class="row-fluid">
-                <div class="span6 keypic text-right">
-                    <img src="/bomberman/arrowkeys.gif" alt="arrow keys"/>
-                </div>
-                <div class="span6 text-left controltext">
-                    Movement
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span6 keypic text-right">
-                    <img src="/bomberman/spacebar.png" alt="spacebar"/>
-                </div>
-                <div class="span6 text-left controltext">
-                    Drop bomb
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span6 keypic text-right">
-                    <img src="/bomberman/q.jpg" alt="q"/>
-                </div>
-                <div class="span6 text-left controltext">
-                    Exit
-                </div>
+                <form  action="/gifupload/upload" enctype="multipart/form-data" method="post">
+                Upload an animated gif (square please)<br /><br />
+                <input type="file" name="yourgif">
+                <input type="text" style="width:20px;" name="framerate">
+                <input type="submit" value="UPLOAD Gif">
+                </form>
             </div>
         </div>
     </section>
