@@ -28,7 +28,7 @@ class BaseBomberman(DancefloorLoop):
 
     def check_explosion(self, bomb):
         for pname, player in self.players.items():
-            if abs(player.x - bomb.x) <= 2 and abs(player.y - bomb.y) <= 2:
+            if abs(player.x - bomb.x) <= 1 and abs(player.y - bomb.y) <= 1:
                 self.kill_player(pname)
 
     def compile_data(self):
