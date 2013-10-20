@@ -46,8 +46,8 @@ class SingleKeyboardBomberman(BaseBomberman):
 
     def __init__(self, api=None, delay=0.1):
         super(SingleKeyboardBomberman, self).__init__(api, delay)
-        self.players['player1'] = Player([0, 255, 0])
-        self.players['player2'] = Player([0, 0, 255])
+        self.players['player1'] = Player([0, 255, 0], [7,0])
+        self.players['player2'] = Player([0, 0, 255], [0,7])
         self.keymap = {
             16: self.players['player1'].setBomb,
             38: self.players['player1'].move_up,
@@ -58,7 +58,7 @@ class SingleKeyboardBomberman(BaseBomberman):
             83: self.players['player2'].move_up,
             70: self.players['player2'].move_down,
             65: self.players['player2'].move_left,
-            64: self.players['player2'].move_right,
+            68: self.players['player2'].move_right,
             113: self.kill
         }
 
@@ -102,9 +102,9 @@ class Bomb(object):
 
 class Player(object):
 
-    def __init__(self, color):
-        self.x = 0
-        self.y = 0
+    def __init__(self, color, initialPos):
+        self.x = initialPos[0]
+        self.y = initialPos[1]
         self.color = color
         self.bombs = []
 
