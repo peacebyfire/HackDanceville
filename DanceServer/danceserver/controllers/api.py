@@ -18,9 +18,7 @@ class APIController(BaseController):
     @expose('json')
     def display(self, data):
         data = json.loads(data)
-        loop = DancefloorLoop(data, delay=0.5)
-        loop.start()
-        g.add_loop('display', loop)
+        g.put_static_data(data, delay=0.5)
 
     @expose('json')
     def histogram(self, data):

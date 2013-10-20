@@ -18,21 +18,10 @@ class BuilderController(BasePluginController):
     @expose('json')
     def display(self, data):
         data = json.loads(data)
-        self.animator.queue.put(data)
-        if not self.animator.is_alive():
-            try:
-                g.kill_all_loops()
-                self.animator.start()
-            except RuntimeError:
-                self.animator = Animator(self.api, data=data)
-                self.animator.start()
-            g.add_loop('builder', self.animator)
+        g.put_animation_data(data)
         return {"success": True}
 
     @expose('json')
     def stop(self):
-        if self.animator.is_alive():
-            self.animator.queue.put(None)
-            self.animator.join(5)
-            self.animator = Animator(self.api)
+        g.animation_loop.kill()
         return {"success": True}
