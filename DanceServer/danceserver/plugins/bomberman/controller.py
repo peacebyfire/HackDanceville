@@ -1,4 +1,4 @@
-from tg import expose
+from tg import expose, app_globals as g
 from danceserver.lib.base import BasePluginController
 from hackdanceville.move import Move
 
@@ -19,7 +19,9 @@ class BombermanController(BasePluginController):
 
     @expose('danceserver.plugins.bomberman.templates.index')
     def index(self):
+        g.kill_loops_not_in('bomberman')
         self.bomber.initialize_loop()
+        g.add_loop('bomberman', self.bomber.loop)
         return {}
 
     @expose()

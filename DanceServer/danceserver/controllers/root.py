@@ -4,6 +4,7 @@ import pkg_resources
 
 from tg import expose, app_globals
 from tg.i18n import ugettext as _, lazy_ugettext as l_
+from danceserver.controllers.api import APIController
 
 from danceserver.lib.base import BaseController
 from danceserver.controllers.error import ErrorController
@@ -27,6 +28,7 @@ class RootController(BaseController):
     """
 
     error = ErrorController()
+    api = APIController()
 
     def __init__(self):
         self.plugins = []

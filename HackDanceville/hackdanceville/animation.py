@@ -39,3 +39,7 @@ class Animator(threading.Thread):
             self.api.send(data)
             time.sleep(self.delay)
             self.update_data()
+
+    def kill(self):
+        self.queue.put(None)
+        self.join(5)

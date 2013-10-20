@@ -1,5 +1,5 @@
 import json
-from tg import expose, request
+from tg import expose, app_globals as g
 
 from hackdanceville.animation import Animator
 from danceserver.lib.base import BasePluginController
@@ -21,10 +21,12 @@ class BuilderController(BasePluginController):
         self.animator.queue.put(data)
         if not self.animator.is_alive():
             try:
+                g.kill_all_loops()
                 self.animator.start()
             except RuntimeError:
                 self.animator = Animator(self.api, data=data)
                 self.animator.start()
+            g.add_loop('builder', self.animator)
         return {"success": True}
 
     @expose('json')
