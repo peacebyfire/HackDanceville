@@ -22,7 +22,7 @@ class APIController(BaseController):
         data = json.loads(data)
 
     @expose('json')
-    def scaled(self, data=None):
+    def scaled(self, data=None, **kw):
         if data is None:
             data = request.body
         print data
