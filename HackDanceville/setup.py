@@ -12,9 +12,6 @@ setup(
     description='Hack til you drop',
     author_email='',
     url='',
-    install_requires=[
-        "PIL"
-    ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
 )

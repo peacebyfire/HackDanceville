@@ -3,7 +3,7 @@ from tg import expose, app_globals as g
 import string
 from danceserver.lib.base import BasePluginController
 from hackdanceville.move import SingleKeyboardBomberman
-from PIL import Image, ImagePalette
+import Image, ImagePalette
 import re
 
 
